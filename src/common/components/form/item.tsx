@@ -3,8 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function FormItem({ errorMsg, ...props }: { errorMsg: string | undefined } & FormItemProps) {
   return (
-    <Form.Item {...props} validateStatus={errorMsg ? 'error' : ''} help={errorMsg}>
+    <Form.Item {...props}>
       {props.children}
+      <AnimatePresence>
+        {errorMsg && (
+          <motion.div
+            className="ant-form-item-explain "
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <p role="alert" className="ant-form-item-explain-error">
+              {errorMsg}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Form.Item>
   );
 }

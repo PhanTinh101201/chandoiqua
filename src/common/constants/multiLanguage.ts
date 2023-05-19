@@ -33,19 +33,35 @@ const multiLanguage: MultiLanguage = {
   },
   email_invalid: {
     en: 'Invalid email',
-    jp: '正しいメールアドレスを入力してください',
+    jp: 'メールアドレスの形式が正しくありません。 ご確認ください。',
   },
   email_require: {
     en: 'Require',
-    jp: 'メールアドレスを入力してください',
+    jp: '必須項目に入力してください。',
   },
   password_require: {
     en: 'Require',
-    jp: 'パスワードを入力してください',
+    jp: '必須項目に入力してください。',
   },
   login: {
     en: 'Login',
     jp: 'ログイン',
+  },
+  field_invalid_email: {
+    en: 'field_invalid_email',
+    jp: 'メールアドレスの形式が正しくありません。 ご確認ください。',
+  },
+  must_be_at_most_email: {
+    en: 'must_be_at_most_email',
+    jp: 'メールアドレスは50文字以内で入力してください。',
+  },
+  E_pass_min_max: {
+    en: 'E_pass_min_max',
+    jp: 'パスワードはハイフンを入れずに半角9～255桁で入力してください。',
+  },
+  E_pass_regex: {
+    en: 'E_pass_regex',
+    jp: 'パスワードは、少なくとも9文字、1つの数字、1つの特殊文字、大文字と小文字の両方を含む必要があります。 ',
   },
 };
 

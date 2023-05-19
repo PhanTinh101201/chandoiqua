@@ -1,6 +1,6 @@
 * {
   font-size: 16px;
-  font-family: 'Meiryo', 'Noto Sans JP', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 p {
@@ -112,4 +112,9 @@ span.ant-radio + * {
 
 .ant-form-item-explain-error {
   font-size: 14px;
+}
+
+.form-sndl-css input[name='password'],
+.form-sndl-css input[name='passwordConfirm'] {
+  background: transparent !important;
 }

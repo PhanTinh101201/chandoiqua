@@ -5,6 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'bd-colors': '#F8C9CB',
         primary: '#fc7679',
         'primary-strong': '#cb6669',
         'primary-strong-100': '#FE9699',
@@ -23,6 +24,15 @@ module.exports = {
           lighter: '#4D4D4D',
           'lighter-1': '#777777',
         },
+      },
+      boxShadow: {
+        'cus-sndl': '0 12px 201px 0 rgba(0,0,0,.06)',
+      },
+      height: {
+        50: '50px',
+      },
+      fontFamily: {
+        sf_pro: ['SF Pro Display'],
       },
     },
     screens: {

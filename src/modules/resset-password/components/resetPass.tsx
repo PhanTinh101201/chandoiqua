@@ -1,7 +1,7 @@
+/* eslint-disable no-console */
 import { Input, Form, Button, Typography } from 'antd';
-import Link from 'next/link';
 import { useFormHandler } from 'common/hooks';
-import { validationSchema } from '../validate';
+import { validationSchemaReset } from '../../resset-password/validate';
 import FormItem from 'common/components/form/item';
 import { useEffect } from 'react';
 import { isEmpty } from 'lodash';
@@ -9,8 +9,8 @@ import { isEmpty } from 'lodash';
 const { Paragraph } = Typography;
 
 export type FormValue = {
-  email: string;
   password: string;
+  passwordConfirm: string;
 };
 
 export interface Props {
@@ -20,10 +20,10 @@ export interface Props {
   setMessageError: (data: string) => any;
 }
 
-function Login({ submit, loading, messageError, setMessageError }: Props) {
+function ResetPass({ submit, loading, messageError, setMessageError }: Props) {
   const form = useFormHandler<FormValue>({
-    initialValues: { email: '', password: '' },
-    validationSchema,
+    initialValues: { password: '', passwordConfirm: '' },
+    validationSchema: validationSchemaReset,
     onSubmit: submit,
   });
 
@@ -36,22 +36,31 @@ function Login({ submit, loading, messageError, setMessageError }: Props) {
   return (
     <div className="w-full flex-1 bg-white flex form-sndl-css justify-center">
       <Form onFinish={form.handleSubmit} className="flex items-center justify-center" layout="vertical">
-        <div className="w-[350px]">
-          <div className="logo-admin text-center mb-[55px]">
+        <div className="w-[350px] -mt-[8%]">
+          <div className="logo-admin text-center mb-[8px]">
             <img alt="logo" src="/assets/images/logo.png" />
           </div>
-          <FormItem className="mb-[20px]" errorMsg={form.errors.email}>
-            <Input
-              {...form.register('email')}
-              className="w-full border-2 h-50 rounded-[6px] bg-[#EBEBEB] border-bd-colors"
-              placeholder="メールアドレス"
-            />
-          </FormItem>
+          <Typography className="text-[16px] font-sf_pro text-center text-[#303030] leading-[1.4] font-[600] mb-[12px]">
+            新しいパスワード入力
+          </Typography>
+          <Paragraph className="mx-auto block max-w-[300px] text-[12px] font-sf_pro text-center text-[#838383] font-[300] leading-[1.5] mb-[10px]">
+            登録したメールアドレスを下に入力して、パスワードのリセット手順を受け取ります。
+          </Paragraph>
           <FormItem className="mb-[20px]" errorMsg={form.errors.password}>
             <Input.Password
               {...form.register('password')}
               className="cursor-pointer w-full h-50 rounded-[6px] border-2 bg-[#EBEBEB] border-bd-colors"
-              placeholder="パスワード"
+              placeholder="新しいパスワード"
+              iconRender={(visible) =>
+                visible ? <img alt="eye" src="/assets/images/eye_active.svg" /> : <img alt="eye" src="/assets/images/eye_unactive.svg" />
+              }
+            />
+          </FormItem>
+          <FormItem className="mb-[20px]" errorMsg={form.errors.passwordConfirm}>
+            <Input.Password
+              {...form.register('passwordConfirm')}
+              className="cursor-pointer w-full h-50 rounded-[6px] border-2 bg-[#EBEBEB] border-bd-colors"
+              placeholder="新しいパスワード(確認)"
               iconRender={(visible) =>
                 visible ? <img alt="eye" src="/assets/images/eye_active.svg" /> : <img alt="eye" src="/assets/images/eye_unactive.svg" />
               }
@@ -66,19 +75,13 @@ function Login({ submit, loading, messageError, setMessageError }: Props) {
               disabled={!form.dirty || !isEmpty(form.errors) || !!messageError}
               className="bg-[#FF858B] font-[14px] font-[500] leading-[1.5] h-[50px] text-white rounded-[6px]"
             >
-              ログイン
+              送信する
             </Button>
           </div>
-          <Paragraph className="text-[10px] text-center text-[#666] font-[500] mt-[10px]">
-            パスワードを忘れた方は
-            <Link href="/forgot-password">
-              <a className="text-[#FF858B] text-[10px] align-middle no-underline">こちら</a>
-            </Link>
-          </Paragraph>
         </div>
       </Form>
     </div>
   );
 }
 
-export default Login;
+export default ResetPass;
