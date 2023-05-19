@@ -70,33 +70,33 @@ pipeline {
             }
         }
 
-        // stage('Build and push packages'){
-        //     when { 
-        //         expression { params.BUILD_MANUAL == 'frontend' }
-        //     }
-        //     steps {
-        //         script {
-        //             def now = new Date()
-        //             def dateTag = now.format("yyyy_MM_dd_HHmmss")
-        //             env.IMAGE_TAG = "${currentVersion}_${dateTag}"
-        //             if (env.BRANCH_NAME == 'develop') {
-        //                 sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} --build-arg ENVIRONMENT=development -f Dockerfile ."
-        //             } else if (env.BRANCH_NAME == 'staging') {
-        //                 sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} --build-arg ENVIRONMENT=staging -f Dockerfile ."
-        //             } else if (env.BRANCH_NAME == 'main') {
-        //                 sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} --build-arg ENVIRONMENT=prod -f Dockerfile ."
-        //             } else {
-        //                 echo 'Branch invalid'
-        //             }
-        //             sh "docker push  icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
-	    //         sh "docker rmi icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
-        //             sh "docker image prune --filter label=stage=build -f"
-        //         }
-        //         echo "Image tag:"
-        //         echo "${env.IMAGE_TAG}"
+        stage('Build and push packages'){
+            when { 
+                expression { params.BUILD_MANUAL == 'frontend' }
+            }
+            steps {
+                script {
+                    def now = new Date()
+                    def dateTag = now.format("yyyy_MM_dd_HHmmss")
+                    env.IMAGE_TAG = "${currentVersion}_${dateTag}"
+                    if (env.BRANCH_NAME == 'develop2') {
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                    } else if (env.BRANCH_NAME == 'staging') {
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                    } else if (env.BRANCH_NAME == 'main') {
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                    } else {
+                        echo 'Branch invalid'
+                    }
+                    sh "docker push  icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
+	            sh "docker rmi icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
+                    sh "docker image prune --filter label=stage=build -f"
+                }
+                echo "Image tag:"
+                echo "${env.IMAGE_TAG}"
                 
-        //     }
-        // }
+            }
+        }
         
  
         // stage('Deploy') { 

@@ -1,31 +1,23 @@
-# Stage 1: Compile and Build angular codebase
+# Base image
+FROM node:14-alpine
 
-# Use official node image as the base image
-FROM node:14-alpine  as build
+# Set the working directory inside the container
+WORKDIR /app
 
-LABEL stage=build
-ARG ENVIRONMENT
-# Set the working directory
-WORKDIR /usr/local/app
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Add the source code to app
-COPY ./ /usr/local/app/
+# # Install project dependencies
+RUN yarn
 
-# Install all the dependencies
-RUN yarn install 
+# Copy the rest of the project files to the container
+COPY . .
 
-# Generate the build of the application
-RUN yarn build:$ENVIRONMENT
+# Build the Next.js application
+RUN yarn build
 
-# Stage 2: Serve app with nginx server
+# Expose the desired port (e.g., 3000) for the Next.js application
+EXPOSE 3000
 
-# Use official nginx image as the base image
-FROM nginx:latest
-ARG ENVIRONMENT
-
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /usr/local/app/build /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
+# Start the Next.js application
+CMD ["yarn", "start"]
