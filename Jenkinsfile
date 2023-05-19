@@ -80,16 +80,16 @@ pipeline {
                     def dateTag = now.format("yyyy_MM_dd_HHmmss")
                     env.IMAGE_TAG = "${currentVersion}_${dateTag}"
                     if (env.BRANCH_NAME == 'develop2') {
-                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web-admin:${env.IMAGE_TAG} -f Dockerfile ."
                     } else if (env.BRANCH_NAME == 'staging') {
-                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web-admin:${env.IMAGE_TAG} -f Dockerfile ."
                     } else if (env.BRANCH_NAME == 'main') {
-                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG} -f Dockerfile ."
+                        sh "docker build --force-rm -t icucoregistrydevjapaneast.azurecr.io/frontend-web-admin:${env.IMAGE_TAG} -f Dockerfile ."
                     } else {
                         echo 'Branch invalid'
                     }
-                    sh "docker push  icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
-	            sh "docker rmi icucoregistrydevjapaneast.azurecr.io/frontend-web:${env.IMAGE_TAG}"
+                    sh "docker push  icucoregistrydevjapaneast.azurecr.io/frontend-web-admin:${env.IMAGE_TAG}"
+	            sh "docker rmi icucoregistrydevjapaneast.azurecr.io/frontend-web-admin:${env.IMAGE_TAG}"
                     sh "docker image prune --filter label=stage=build -f"
                 }
                 echo "Image tag:"
@@ -99,39 +99,39 @@ pipeline {
         }
         
  
-        // stage('Deploy') { 
-        //     when { 
-        //         expression { params.BUILD_MANUAL == 'frontend' }
-        //     }
-        //     environment {
-        //         GIT_PROTOCOL = 'https'
-        //         GIT_CONFIG_URI = "dev.azure.com/devops-icuco/04_icuco-book/_git/icuco-chart"
-        //         GIT_CREDS = "tran.van.cong"
+        stage('Deploy') { 
+            when { 
+                expression { params.BUILD_MANUAL == 'frontend-admin' }
+            }
+            environment {
+                GIT_PROTOCOL = 'https'
+                GIT_CONFIG_URI = "dev.azure.com/devops-icuco/04_icuco-book/_git/icuco-chart"
+                GIT_CREDS = "tran.van.cong"
  
-        //     }
-        //     steps {
-        //         configFileProvider([configFile(fileId: 'patchTagImages', targetLocation: '/tmp/patchTagImages.sh')]) {
-        //             withCredentials([usernamePassword(credentialsId: GIT_CREDS, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
-        //                 sh "chmod +x /tmp/patchTagImages.sh"
-        //                 sh "/tmp/patchTagImages.sh"
-        //             }
-        //         }
-        //     }
-        // }
+            }
+            steps {
+                configFileProvider([configFile(fileId: 'patchTagImages', targetLocation: '/tmp/patchTagImages.sh')]) {
+                    withCredentials([usernamePassword(credentialsId: GIT_CREDS, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]){
+                        sh "chmod +x /tmp/patchTagImages.sh"
+                        sh "/tmp/patchTagImages.sh"
+                    }
+                }
+            }
+        }
 
-        // stage('Notification') {
-        //     when { 
-        //             expression { params.BUILD_MANUAL == 'frontend' }
-        //         }
-        //     steps {
-        //         script {
-        //             office365ConnectorSend webhookUrl: "${URL_WEBHOOK}",
-        //                 message: 'Application has been deployed',
-        //                 status: 'Success',
-        //                 color: '#00FF00'
-        //         }
-        //     }
-        // }
+        stage('Notification') {
+            when { 
+                    expression { params.BUILD_MANUAL == 'frontend-admin' }
+                }
+            steps {
+                script {
+                    office365ConnectorSend webhookUrl: "${URL_WEBHOOK}",
+                        message: 'Application has been deployed',
+                        status: 'Success',
+                        color: '#00FF00'
+                }
+            }
+        }
     }
 }
 
