@@ -26,6 +26,7 @@ function Login({ submit, loading, messageError, setMessageError }: Props) {
     validationSchema,
     onSubmit: submit,
   });
+  console.log(form.values);
 
   useEffect(() => {
     if (messageError) {
