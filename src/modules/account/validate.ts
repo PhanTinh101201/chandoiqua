@@ -3,16 +3,27 @@ import { translate } from 'common/utilities/helper';
 
 export const validationSchema = Yup.object().shape({
     email: Yup.string()
-        .required(translate('email_require'))
+        .required(translate('必須項目に入力してください。'))
         .matches(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            translate('field_invalid_email')
+            translate('登録メールアドレスの形式が正しくありません。 ご確認ください。')
         )
-        .trim()
-        .max(50, translate('must_be_at_most_email')),
-    password: Yup.string()
-        .required(translate('password_require'))
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&]){9,}/, translate('E_pass_regex'))
-        .min(9, translate('E_pass_min_max'))
-        .max(255, translate('E_pass_min_max')),
+        .max(50, translate('Emailは50文字以内で入力してください。')),
+    loginId: Yup.string()
+        .required(translate('必須項目に入力してください。'))
+        .max(50, translate('IDは50文字以内で入力してください。')),
+    familyNameFirst: Yup.string()
+        .required(translate('必須項目に入力してください。'))
+        .max(10, translate('氏名は10文字以内で入力してください。')),
+    familyNameLast: Yup.string()
+        .required(translate('必須項目に入力してください。'))
+        .max(10, translate('氏名は10文字以内で入力してください。')),
+    furiganaNameFirst: Yup.string()
+        .required(translate('必須項目に入力してください。'))
+        .matches(/^[(ぁ-んァ-ン)|ー]+$/, translate("全角ひらがな又はカタカナ文字で入力してください。"))
+        .max(10, translate('氏名は10文字以内で入力してください。')),
+    furiganaNameLast: Yup.string()
+        .required(translate('必須項目に入力してください。'))
+        .matches(/^[(ぁ-んァ-ン)|ー]+$/, translate("全角ひらがな又はカタカナ文字で入力してください。"))
+        .max(10, translate('氏名は10文字以内で入力してください。')),
 });

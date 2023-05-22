@@ -1,9 +1,8 @@
 import { Input, Form, Typography, Button } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormHandler } from 'common/hooks';
 import FormItem from 'common/components/form/item';
 import { validationSchema } from '../validate';
-import { useForm, SubmitHandler } from 'react-hook-form';
 
 const { Paragraph } = Typography;
 
@@ -17,13 +16,13 @@ export type FormValue = {
 };
 
 export interface Props {
-  handleSubmitCreate: (data: FormValue) => void;
+  handleSubmit: (data: FormValue) => void;
   loading: boolean;
   messageError: string;
   setMessageError: (data: string) => any;
 }
 
-export default function Account({ handleSubmitCreate, loading, messageError, setMessageError }: Props) {
+export default function Account({ handleSubmit, loading, messageError, setMessageError }: Props) {
   const form = useFormHandler<FormValue>({
     initialValues: {
       loginId: '',
@@ -34,8 +33,14 @@ export default function Account({ handleSubmitCreate, loading, messageError, set
       furiganaNameLast: '',
     },
     validationSchema,
-    onSubmit: (data) => console.log(data),
+    onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    if (messageError) {
+      setMessageError('');
+    }
+  }, [form.values]);
 
   return (
     <div>

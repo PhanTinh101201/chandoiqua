@@ -26,13 +26,14 @@ function Login({ submit, loading, messageError, setMessageError }: Props) {
     validationSchema,
     onSubmit: submit,
   });
-  console.log(form.values);
 
   useEffect(() => {
     if (messageError) {
       setMessageError('');
     }
   }, [form.values]);
+
+  console.log('hihi', submit);
 
   return (
     <div className="w-full flex-1 bg-white flex form-sndl-css justify-center">

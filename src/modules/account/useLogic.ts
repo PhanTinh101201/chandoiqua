@@ -13,8 +13,7 @@ export default function useLogic() {
 
     const { request, loading } = useApiCaller<LoginResDto>({ apiCaller: account });
 
-    const handleSubmitCreate = async (data: FormValue) => {
-        console.log('fffff')
+    const handleSubmit = async (data: FormValue) => {
         const dataBody = new CreateAccount();
         dataBody.loginId = data.loginId;
         dataBody.email = data.email;
@@ -30,5 +29,5 @@ export default function useLogic() {
         setMessageError(translate('email_pwd_incorrect'));
     };
 
-    return { handleSubmitCreate, messageError, setMessageError, loading };
+    return { handleSubmit, messageError, setMessageError, loading };
 }
