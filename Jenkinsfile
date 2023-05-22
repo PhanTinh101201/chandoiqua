@@ -33,10 +33,15 @@ pipeline {
     }
     stages {
         stage('Checkout Source Code') {
-            anyOf{
+            when{
+                anyOf{
                     changeset "*"
                     expression { params.BUILD_MANUAL == 'frontend-web-admin' }
-                    } 
+                }
+                anyOf {
+                    branch 'develop2'
+                }
+            }
             steps {
                 /* Let's make sure we have the repository cloned to our workspace */
              
@@ -57,10 +62,15 @@ pipeline {
         }
 
         stage('Update Spring Profiles'){
-            anyOf{
+            when{
+                anyOf{
                     changeset "*"
                     expression { params.BUILD_MANUAL == 'frontend-web-admin' }
-                    } 
+                }
+                anyOf {
+                    branch 'develop2'
+                }
+            } 
             steps {
                 configFileProvider([
                     configFile(fileId: "frontend-admin-${ENV_CODE}-profile",
@@ -73,10 +83,15 @@ pipeline {
         }
 
         stage('Build and push packages'){
-            anyOf{
+            when{
+                anyOf{
                     changeset "*"
                     expression { params.BUILD_MANUAL == 'frontend-web-admin' }
-                    }
+                }
+                anyOf {
+                    branch 'develop2'
+                }
+            }
             steps {
                 script {
                     def now = new Date()
@@ -103,10 +118,15 @@ pipeline {
         
  
         stage('Deploy') { 
-            anyOf{
+            when{
+                anyOf{
                     changeset "*"
                     expression { params.BUILD_MANUAL == 'frontend-web-admin' }
-                    }
+                }
+                anyOf {
+                    branch 'develop2'
+                }
+            }
             environment {
                 GIT_PROTOCOL = 'https'
                 GIT_CONFIG_URI = "dev.azure.com/devops-icuco/04_icuco-book/_git/icuco-chart"
@@ -124,10 +144,15 @@ pipeline {
         }
 
         stage('Notification') {
-            anyOf{
+            when{
+                anyOf{
                     changeset "*"
                     expression { params.BUILD_MANUAL == 'frontend-web-admin' }
-                    }
+                }
+                anyOf {
+                    branch 'develop2'
+                }
+            }
             steps {
                 script {
                     office365ConnectorSend webhookUrl: "${URL_WEBHOOK}",
