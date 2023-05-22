@@ -33,9 +33,10 @@ pipeline {
     }
     stages {
         stage('Checkout Source Code') {
-            when{ 
-                expression { params.BUILD_MANUAL == 'frontend-admin' }
-            } 
+            anyOf{
+                    changeset "*"
+                    expression { params.BUILD_MANUAL == 'frontend-web-admin' }
+                    } 
             steps {
                 /* Let's make sure we have the repository cloned to our workspace */
              
@@ -56,9 +57,10 @@ pipeline {
         }
 
         stage('Update Spring Profiles'){
-            when{ 
-                expression { params.BUILD_MANUAL == 'frontend-admin' }
-            } 
+            anyOf{
+                    changeset "*"
+                    expression { params.BUILD_MANUAL == 'frontend-web-admin' }
+                    } 
             steps {
                 configFileProvider([
                     configFile(fileId: "frontend-admin-${ENV_CODE}-profile",
@@ -71,9 +73,10 @@ pipeline {
         }
 
         stage('Build and push packages'){
-            when { 
-                expression { params.BUILD_MANUAL == 'frontend' }
-            }
+            anyOf{
+                    changeset "*"
+                    expression { params.BUILD_MANUAL == 'frontend-web-admin' }
+                    }
             steps {
                 script {
                     def now = new Date()
@@ -100,9 +103,10 @@ pipeline {
         
  
         stage('Deploy') { 
-            when { 
-                expression { params.BUILD_MANUAL == 'frontend-admin' }
-            }
+            anyOf{
+                    changeset "*"
+                    expression { params.BUILD_MANUAL == 'frontend-web-admin' }
+                    }
             environment {
                 GIT_PROTOCOL = 'https'
                 GIT_CONFIG_URI = "dev.azure.com/devops-icuco/04_icuco-book/_git/icuco-chart"
@@ -120,9 +124,10 @@ pipeline {
         }
 
         stage('Notification') {
-            when { 
-                    expression { params.BUILD_MANUAL == 'frontend-admin' }
-                }
+            anyOf{
+                    changeset "*"
+                    expression { params.BUILD_MANUAL == 'frontend-web-admin' }
+                    }
             steps {
                 script {
                     office365ConnectorSend webhookUrl: "${URL_WEBHOOK}",
